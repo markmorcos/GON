@@ -1,12 +1,13 @@
 source 'https://rubygems.org'
 
 gem 'devise'
+gem 'letter_opener'
 gem 'rmagick'
 gem 'carrierwave'
 gem 'omniauth'
 gem 'omniauth-facebook'
-gem 'omniauth-foursquare'
-gem 'omniauth-instagram'
+# gem 'omniauth-foursquare'
+# gem 'omniauth-instagram'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.0'

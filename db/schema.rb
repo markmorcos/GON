@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151112105833) do
+ActiveRecord::Schema.define(version: 20151117132137) do
 
   create_table "comments", force: :cascade do |t|
     t.integer  "user_id"
@@ -32,6 +32,22 @@ ActiveRecord::Schema.define(version: 20151112105833) do
   create_table "likes", force: :cascade do |t|
     t.integer  "user_id"
     t.integer  "post_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "meeting_request_users", force: :cascade do |t|
+    t.integer  "meeting_request_id"
+    t.integer  "user_id"
+    t.integer  "accepted",           default: 0
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
+  end
+
+  create_table "meeting_requests", force: :cascade do |t|
+    t.integer  "user_id"
+    t.decimal  "latitude"
+    t.decimal  "longitude"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
