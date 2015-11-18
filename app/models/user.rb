@@ -17,7 +17,7 @@ class User < ActiveRecord::Base
   has_many :meeting_requests
   has_many :meeting_request_users
   
-  attr_accessor :friends, :messages, :number_of_posts
+  attr_accessor :friends, :messages, :posts, :number_of_posts_on_my_wall, :posts_on_my_news_feed, :number_of_posts_on_my_news_feed
   
   def friends
     Friend.where("user_id = ? OR other_user_id = ?", id, id)
@@ -27,8 +27,20 @@ class User < ActiveRecord::Base
     Message.where("user_id = ? AND other_user_id = ? OR user_id = ? AND other_user_id = ?", id, other_user_id, other_user_id, id)
   end
 
-  def number_of_posts
+  def posts
+    Post.where("user_id = ? AND other_user_id IS ? OR other_user_id = ?", id, nil, id)
+  end
+  
+  def number_of_posts_on_my_wall
     posts.size()
+  end
+  
+  def posts_on_my_news_feed
+    Post.where("user_id = ? AND other_user_id IS ? OR other_user_id = ? OR user_id IN (SELECT user_id FROM friends WHERE (user_id = ? OR other_user_id = ?) AND accepted = 1) OR other_user_id IN (SELECT user_id FROM friends WHERE (user_id = ? OR other_user_id = ?) AND accepted = 1) OR user_id IN (SELECT other_user_id FROM friends WHERE (user_id = ? OR other_user_id = ?) AND accepted = 1) OR other_user_id IN (SELECT other_user_id FROM friends WHERE (user_id = ? OR other_user_id = ?) AND accepted = 1)", id, nil, id, id, id, id, id, id, id, id, id)
+  end
+
+  def number_of_posts_on_my_news_feed
+    posts_on_my_news_feed.size()
   end
 
   class EmailValidator < ActiveModel::EachValidator
