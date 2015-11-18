@@ -20,7 +20,7 @@ class User < ActiveRecord::Base
   attr_accessor :friends, :messages, :posts, :number_of_posts_on_my_wall, :posts_on_my_news_feed, :number_of_posts_on_my_news_feed
   
   def friends
-    Friend.where("user_id = ? OR other_user_id = ?", id, id)
+    Friend.where("user_id = ? OR other_user_id = ?", id, id).current
   end
 
   def messages(other_user_id)
