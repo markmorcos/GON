@@ -29,7 +29,7 @@ class Api::UsersController < Api::BaseController
 	
 	def news_feed
 		@user = User.find(params[:id])
-		render json: @user.posts_on_my_news_feed, include: [:user, :other_user]
+		render json: @user.posts_on_my_news_feed, include: [:user, :other_user, comments: { include: :user }]
 	end
 
 	
