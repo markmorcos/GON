@@ -1,6 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'devise'
+gem 'rabl'
 gem 'letter_opener'
 gem 'rmagick'
 gem 'carrierwave'

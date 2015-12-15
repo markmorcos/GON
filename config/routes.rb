@@ -1,14 +1,20 @@
 Rails.application.routes.draw do
   namespace :api, defaults: { format: :json } do
     devise_for :users
-    resources :users do
-      post 'check_email' => 'registrations#check_email'
-    end
+    post 'registrations/check_email' => 'registrations#check_email'
+    resources :users
     resources :likes
     resources :comments
     resources :friends
     resources :messages
     resources :posts
+    get 'users/:id/current_friends' => 'users#friends'
+    get 'users/:id/friend_requests' => 'users#pending'
+    get 'users/:id/news_feed' => 'users#news_feed'
+    post 'users/:id/change_name' => 'users#change_name'
+    post 'users/:id/respond' => 'users#respond'
+    #post 'posts/create' => 'posts#create'
+    
   end
 
 

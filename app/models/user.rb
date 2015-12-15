@@ -2,8 +2,7 @@ class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable,
-         :confirmable
+         :recoverable, :rememberable, :trackable, :validatable
 
   has_many :friends
   has_many :users, through: :friends
@@ -20,7 +19,7 @@ class User < ActiveRecord::Base
   attr_accessor :friends, :messages, :posts, :number_of_posts_on_my_wall, :posts_on_my_news_feed, :number_of_posts_on_my_news_feed
   
   def friends
-    Friend.where("user_id = ? OR other_user_id = ?", id, id).current
+    Friend.where("user_id = ? OR other_user_id = ?", id, id)
   end
 
   def messages(other_user_id)
@@ -28,7 +27,7 @@ class User < ActiveRecord::Base
   end
 
   def posts
-    Post.where("user_id = ? AND other_user_id IS ? OR other_user_id = ?", id, nil, id)
+    Post.where("user_id = ? AND other_user_id = ? OR other_user_id = ?", id, 0, id)
   end
   
   def number_of_posts_on_my_wall
@@ -36,7 +35,7 @@ class User < ActiveRecord::Base
   end
   
   def posts_on_my_news_feed
-    Post.where("user_id = ? AND other_user_id IS ? OR other_user_id = ? OR user_id IN (SELECT user_id FROM friends WHERE (user_id = ? OR other_user_id = ?) AND accepted = 1) OR other_user_id IN (SELECT user_id FROM friends WHERE (user_id = ? OR other_user_id = ?) AND accepted = 1) OR user_id IN (SELECT other_user_id FROM friends WHERE (user_id = ? OR other_user_id = ?) AND accepted = 1) OR other_user_id IN (SELECT other_user_id FROM friends WHERE (user_id = ? OR other_user_id = ?) AND accepted = 1)", id, nil, id, id, id, id, id, id, id, id, id)
+    Post.where("user_id = ? AND other_user_id = ? OR other_user_id = ? OR user_id IN (SELECT user_id FROM friends WHERE (user_id = ? OR other_user_id = ?) AND accepted = 1) OR other_user_id IN (SELECT user_id FROM friends WHERE (user_id = ? OR other_user_id = ?) AND accepted = 1) OR user_id IN (SELECT other_user_id FROM friends WHERE (user_id = ? OR other_user_id = ?) AND accepted = 1) OR other_user_id IN (SELECT other_user_id FROM friends WHERE (user_id = ? OR other_user_id = ?) AND accepted = 1)", id, 0, id, id, id, id, id, id, id, id, id).order("created_at desc")
   end
 
   def number_of_posts_on_my_news_feed

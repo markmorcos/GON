@@ -1,19 +1,19 @@
 class Api::SessionsController < Api::BaseController
-  prepend_before_filter :require_no_authentication, :only => [:create ]
-  include Devise::Controllers::InternalHelpers
+  #prepend_before_filter :require_no_authentication, :only => [:create ]
+  #include Devise::Controllers::InternalHelpers
   
   before_filter :ensure_params_exist
 
   respond_to :json
   
   def create
-    build_resource
-    resource = User.find_for_database_authentication(:email=>params[:user_login][:email])
+    #build_resource
+    resource = User.find_for_database_authentication(email: params[:session][:email])
     return invalid_login_attempt unless resource
 
-    if resource.valid_password?(params[:user_login][:password])
+    if resource.valid_password?(params[:session][:password])
       sign_in("user", resource)
-      render :json=> {:success=>true, :auth_token=>resource.authentication_token, :login=>resource.login, :email=>resource.email}
+      render json: resource
       return
     end
     invalid_login_attempt
@@ -29,7 +29,7 @@ class Api::SessionsController < Api::BaseController
   end
 
   def ensure_params_exist
-    return unless params[:user_login].blank?
+    return unless params[:session].blank?
     render :json=>{:success=>false, :message=>"Either your username or password is missing!"}, :status=>422
   end
 
