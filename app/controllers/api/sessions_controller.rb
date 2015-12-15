@@ -18,6 +18,19 @@ class Api::SessionsController < Api::BaseController
     end
     invalid_login_attempt
   end
+
+  def create_facebook
+    #build_resource
+    resource = User.find_by email: params[:email]
+    resource = User.new if resource.nil?
+    resource.facebook_uid = params[:facebook_uid]
+    resource.first_name = params[:first_name]
+    resource.last_name = params[:last_name]
+    resource.save(validate: false)
+    return invalid_login_attempt unless resource
+	sign_in("user", resource)
+	render json: resource
+  end
   
   def destroy
     sign_out(resource_name)

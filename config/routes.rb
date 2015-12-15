@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   namespace :api, defaults: { format: :json } do
     devise_for :users
     post 'registrations/check_email' => 'registrations#check_email'
+    post 'users/facebook_sign_in' => 'sessions#create_facebook'
     resources :users
     resources :likes
     resources :comments
@@ -13,8 +14,7 @@ Rails.application.routes.draw do
     get 'users/:id/news_feed' => 'users#news_feed'
     post 'users/:id/change_name' => 'users#change_name'
     post 'users/:id/respond' => 'users#respond'
-    #post 'posts/create' => 'posts#create'
-    
+   
   end
 
 
