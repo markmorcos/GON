@@ -1,7 +1,10 @@
 Rails.application.routes.draw do
   
-  namespace :api, defaults: {format :json} do
+  namespace :api, defaults: { format: :json } do
     devise_for :users
+    resources :users do
+      post 'check_email' => 'registrations#check_email'
+    end
     resources :likes
     resources :comments
     resources :friends
